@@ -1,24 +1,42 @@
 /* Base Application Styles */
-body {
-  color: #fff;
-  background: #222;
-}
+html, body{
+  width: 100%;
+  height: 100%;
+  background-color: #222; 
 
-.index img {
-  margin: 40px auto;
-  border-radius: 4px;
-  background: #fff;
-  display: block;
 }
+.content{
+  width: 100%;
+  height: 100%;
+}
+/*stage 开始*/
+.stage{
+  position: relative;
+  width: 100%;
+  height: 680px;
 
-.index .notice {
-  margin: 20px auto;
-  padding: 15px 0;
+}
+/*stage 结束*/
+
+/*image 开始*/
+.img-sec{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #ddd;
+  /*background-color: red;*/
+}
+/*image 结束*/
+
+/*controller 开始*/
+.controller-nav{
+  position: absolute;
+  left: 0;
+  bottom: 30px;
+  z-index: 101;
+
+  width: 100%;
   text-align: center;
-  border: 1px solid #000;
-  border-width: 1px 0;
-  background: #666;
 }
-span {
-  background: red;
-}
+/*controller 结束*/
