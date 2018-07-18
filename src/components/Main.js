@@ -2,6 +2,7 @@ require('normalize.css/normalize.css');
 require('styles/App.css');
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 // let yeomanImage = require('../images/yeoman.png');
 //获取图片相关的数据
@@ -24,12 +25,14 @@ imageDatas = (function genImageURL(imageDataArr){
 function getRangeRandom(low,high) {
 	return Math.ceil(Math.random()* (high - low) + low);
 }
+
 // 一个部分 图片标签组件 <Imgfigure >
 var ImgFigure = React.createClass({
 	render: function () {
 		var styleObj = {};
 		if(this.props.arrange.pos){
 			styleObj = this.props.arrange.pos;
+			// console.log(styleObj);
 		}
 
 		return (
@@ -64,11 +67,11 @@ class AppComponent extends React.Component {
 		};
 		this.state = {
 	      imgsArrangeArr: [
-	        //{
-	        //  pos:{
-	        //    left:'0',
-	        //    top:'0'
-	        //  },
+	        // {
+	         // pos:{
+	         //   left:'0',
+	         //   top:'50'
+	         // }
 	        //  rotate:0, //旋转角度
 	        //  isInverse:false //正反面,false表示正面
 	        //  isCenter:false 图片是否居中
@@ -130,11 +133,12 @@ class AppComponent extends React.Component {
 			imgsArrangeArr.splice(centerIndex,0,imgsArrangeCenterArr[0]);
 
 			this.setState({
-				imgsArrangeArr: imgsArrangeArr
-			});
+	          	imgsArrangeArr: imgsArrangeArr
+	        });
 
 	}
 	// getInitialState(){
+	// 	console.log(123132132);
 	// 	return {
 	// 		imgsArrangeArr:[
 
@@ -142,16 +146,16 @@ class AppComponent extends React.Component {
 	// 	}
 	// }
 
-	ComponentDidMount(){
+	componentDidMount(){
 		// 首先拿到舞台的相关信息
-		var stageDom = React.findDOMNode(this.refs.stage),
-		stageW = stageDom.scrollWidth,
-		stageH = stageDom.scrollHeight,
-		halfStageW = Math.ceil(stageW / 2),
-		halfStageH = Math.ceil(stageH / 2);
-
+		var stageDom = ReactDOM.findDOMNode(this.refs.stage),
+			stageW = stageDom.scrollWidth,
+			stageH = stageDom.scrollHeight,
+			halfStageW = Math.ceil(stageW / 2),
+			halfStageH = Math.ceil(stageH / 2);
+			
 		// 拿到imgfigure 大小
-		var imgFigureDOM = React.findDOMNode(this.refs.imgFigure0),
+		var imgFigureDOM = ReactDOM.findDOMNode(this.refs.imgFigure0),
 			imgW = imgFigureDOM.scrollWidth,
 			imgH = imgFigureDOM.scrollHeight,
 			halfImgW =Math.ceil(imgW / 2),
@@ -170,7 +174,7 @@ class AppComponent extends React.Component {
 		this.Constant.hPosRange.rightSecX[1] = stageW - halfImgW;
 		// 左右的高度一样
 		this.Constant.hPosRange.y[0] = -halfImgH;
-		this.Constant.hPosRange.Y[1] = stageH -halfImgH;
+		this.Constant.hPosRange.y[1] = stageH -halfImgH;
 
 		// 计算上面的高度 以及左右范围
 		this.Constant.vPosRange.topY[0] = -halfImgH;
@@ -185,11 +189,11 @@ class AppComponent extends React.Component {
   		imgFigures = [];
   	//遍历图片对象数组 将每个对象传给ImgFigure标签 一起添加到 imgFigures数组中
   	imageDatas.forEach(function (value, index) {
-
+  		console.log(this.state.imgsArrangeArr[index]);
   		if(!this.state.imgsArrangeArr[index]){
         this.state.imgsArrangeArr[index] = {
           pos:{
-            left: 0,
+            left: 20,
             top: 0
           }
         }

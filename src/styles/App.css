@@ -40,3 +40,19 @@ html, body{
   text-align: center;
 }
 /*controller 结束*/
+
+.img-figure {
+      position: absolute;
+      width: 320px;
+      height: 360px;
+      margin: 0;
+      padding: 40px;
+      background-color: #fff;
+      box-sizing: border-box;
+      cursor: pointer;
+      transform-origin: 0 50% 0;
+      transform-style: preserve-3d;
+      transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
+          
+
+        }
