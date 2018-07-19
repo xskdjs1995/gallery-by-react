@@ -26,33 +26,49 @@ function getRangeRandom(low,high) {
 	return Math.ceil(Math.random()* (high - low) + low);
 }
 
-// 获得一个角度 
+// 获得一个角度
 function get30DegRandom() {
 	return ((Math.random()<0.5 ? '':'-' )+ Math.ceil(Math.random() * 30))
 }
 
 // 一个部分 图片标签组件 <Imgfigure >
 var ImgFigure = React.createClass({
+	// 点击处理函数
+	handleClick(e){
+		this.props.inverse();
+
+		e.stopPropagation();
+
+    	e.preventDefault();
+	},
+
 	render: function () {
 		var styleObj = {};
 		if(this.props.arrange.pos){
 			styleObj = this.props.arrange.pos;
-			// console.log(styleObj);	
+			// console.log(styleObj);
 		}
 
 		if (this.props.arrange.rotate) {
-			(['-moz-','-ms-', 'webkit', '']).forEach(function (argument) {
+			(['-moz-','-ms-', 'webkit', '']).forEach(function () {
 				styleObj['transform'] = 'rotate('+ this.props.arrange.rotate +'deg)';
 			}.bind(this));
 			
 		}
 
+		var imgFigureClassName = 'img-figure';
+		imgFigureClassName += this.props.arrange.isInverse? ' is-inverse': '';
 		return (
-			<figure className="img-figure" style={styleObj}>
+			<figure className={imgFigureClassName} style={styleObj} onClick = {this.handleClick}>
 				<img src={this.props.data.imageURL}
 				 alt={this.props.data.title}/>
 				<figcaption>
-					<h2>{this.props.data.title}</h2>
+					<h2 className="img-title">{this.props.data.title}</h2>
+					<div className="img-back" onClick = {this.handleClick}>
+						<p>
+							{this.props.data.desc}
+						</p>
+					</div>
 				</figcaption>
 			</figure>
 		);
@@ -90,6 +106,21 @@ class AppComponent extends React.Component {
 	        //}
 	      ]
 	    };
+	}
+	/*
+		反转图片
+		indedx 输入当前被执行inverser 操作得到图片对应的图片信息数组的index值
+		返回一个闭包函数{function} 其中包含一个真的等待执行的函数
+	*/
+	inverse(index) {
+		return function () {
+			var imgsArrangeArr = this.state.imgsArrangeArr;
+			imgsArrangeArr[index].isInverse = !imgsArrangeArr[index].isInverse;//取反 原来是正面就换成反面
+			//  重新渲染
+			this.setState({
+				imgsArrangeArr: imgsArrangeArr
+			});
+		}.bind(this);
 	}
 	// 重新布局所有的图片 指定居中哪个图片
 	rearrange(centerIndex){
@@ -215,10 +246,11 @@ class AppComponent extends React.Component {
             left: 20,
             top: 0
           },
-          rotate:0
+          rotate:0,
+          isInverse: false
         }
       }
-  		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]}/>);
+  		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)}/>);
   		// console.log(this.state.imgsArrangeArr[index]);
   	}.bind(this));
     return (
