@@ -21,9 +21,14 @@ imageDatas = (function genImageURL(imageDataArr){
 	}
 	return imageDataArr;
 })(imageDatas);
-
+//获得一个随机数 在 low 和high 范围之间
 function getRangeRandom(low,high) {
 	return Math.ceil(Math.random()* (high - low) + low);
+}
+
+// 获得一个角度 
+function get30DegRandom() {
+	return ((Math.random()<0.5 ? '':'-' )+ Math.ceil(Math.random() * 30))
 }
 
 // 一个部分 图片标签组件 <Imgfigure >
@@ -32,7 +37,14 @@ var ImgFigure = React.createClass({
 		var styleObj = {};
 		if(this.props.arrange.pos){
 			styleObj = this.props.arrange.pos;
-			// console.log(styleObj);
+			// console.log(styleObj);	
+		}
+
+		if (this.props.arrange.rotate) {
+			(['-moz-','-ms-', 'webkit', '']).forEach(function (argument) {
+				styleObj['transform'] = 'rotate('+ this.props.arrange.rotate +'deg)';
+			}.bind(this));
+			
 		}
 
 		return (
@@ -99,6 +111,7 @@ class AppComponent extends React.Component {
 			imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex,1);// imgsArrangeArr 删除指定的元素 并返回给 imgsArrangeCenterArr
 			
 			imgsArrangeCenterArr[0].pos = centerPos; //居中选中的元素
+			imgsArrangeCenterArr[0].rotate = 0; //布局中心的值 不需要
 
 			topImgSpliceIndex = Math.ceil(Math.random()*(imgsArrangeArr.length - topImgNum));
 			// console.log("imgsArrangeArr.length"+imgsArrangeArr.length);
@@ -106,9 +119,12 @@ class AppComponent extends React.Component {
 
 			// 布局上面的
 			imgsArrangeTopArr.forEach(function (value, index) {
-				imgsArrangeTopArr[index].pos = {
-					top:getRangeRandom(vPosRangeTopY[0],vPosRangeTopY[1]),
-					left:getRangeRandom(vPosRangeX[0],vPosRangeX[1])
+				imgsArrangeTopArr[index]= {
+					pos:{
+						top:getRangeRandom(vPosRangeTopY[0],vPosRangeTopY[1]),
+						left:getRangeRandom(vPosRangeX[0],vPosRangeX[1])
+					},
+					rotate:get30DegRandom()
 				}
 			});
 
@@ -121,9 +137,12 @@ class AppComponent extends React.Component {
 				}else{
 					hPosRangeLORX = hPosRangeRightSecX;
 				}
-				imgsArrangeArr[i].pos = {
-					top: getRangeRandom(hPosRangeY[0],hPosRangeY[1]),
-					left: getRangeRandom(hPosRangeLORX[0],hPosRangeLORX[1])
+				imgsArrangeArr[i] = {
+					pos:{
+						top: getRangeRandom(hPosRangeY[0],hPosRangeY[1]),
+						left: getRangeRandom(hPosRangeLORX[0],hPosRangeLORX[1])
+					},
+					rotate:get30DegRandom()
 				}
 			}
 
@@ -189,13 +208,14 @@ class AppComponent extends React.Component {
   		imgFigures = [];
   	//遍历图片对象数组 将每个对象传给ImgFigure标签 一起添加到 imgFigures数组中
   	imageDatas.forEach(function (value, index) {
-  		console.log(this.state.imgsArrangeArr[index]);
+  		// console.log(this.state.imgsArrangeArr[index]);
   		if(!this.state.imgsArrangeArr[index]){
         this.state.imgsArrangeArr[index] = {
           pos:{
             left: 20,
             top: 0
-          }
+          },
+          rotate:0
         }
       }
   		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]}/>);
