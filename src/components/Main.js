@@ -35,7 +35,12 @@ function get30DegRandom() {
 var ImgFigure = React.createClass({
 	// 点击处理函数
 	handleClick(e){
-		this.props.inverse();
+		if (this.props.arrange.isCenter) {
+			this.props.inverse();
+		}else{
+			this.props.center();
+		}
+		
 
 		e.stopPropagation();
 
@@ -54,6 +59,10 @@ var ImgFigure = React.createClass({
 				styleObj['transform'] = 'rotate('+ this.props.arrange.rotate +'deg)';
 			}.bind(this));
 			
+		}
+
+		if (this.props.arrange.isCenter){
+			styleObj.zIndex = 11;
 		}
 
 		var imgFigureClassName = 'img-figure';
@@ -141,6 +150,11 @@ class AppComponent extends React.Component {
 			topImgSpliceIndex = 0, // 上边有几个
 			imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex,1);// imgsArrangeArr 删除指定的元素 并返回给 imgsArrangeCenterArr
 			
+			imgsArrangeCenterArr[0]= {
+				pos:centerPos,
+				rotate:0,
+				isCenter: true
+			}
 			imgsArrangeCenterArr[0].pos = centerPos; //居中选中的元素
 			imgsArrangeCenterArr[0].rotate = 0; //布局中心的值 不需要
 
@@ -155,7 +169,8 @@ class AppComponent extends React.Component {
 						top:getRangeRandom(vPosRangeTopY[0],vPosRangeTopY[1]),
 						left:getRangeRandom(vPosRangeX[0],vPosRangeX[1])
 					},
-					rotate:get30DegRandom()
+					rotate:get30DegRandom(),
+					isCenter: false
 				}
 			});
 
@@ -173,7 +188,8 @@ class AppComponent extends React.Component {
 						top: getRangeRandom(hPosRangeY[0],hPosRangeY[1]),
 						left: getRangeRandom(hPosRangeLORX[0],hPosRangeLORX[1])
 					},
-					rotate:get30DegRandom()
+					rotate:get30DegRandom(),
+					isCenter:false
 				}
 			}
 
@@ -186,6 +202,11 @@ class AppComponent extends React.Component {
 	          	imgsArrangeArr: imgsArrangeArr
 	        });
 
+	}
+	center(index){
+		return function () {
+			this.rearrange(index);
+		}.bind(this)
 	}
 	// getInitialState(){
 	// 	console.log(123132132);
@@ -247,10 +268,11 @@ class AppComponent extends React.Component {
             top: 0
           },
           rotate:0,
-          isInverse: false
+          isInverse: false,
+          isCenter: false
         }
       }
-  		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)}/>);
+  		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)}/>);
   		// console.log(this.state.imgsArrangeArr[index]);
   	}.bind(this));
     return (
