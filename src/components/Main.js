@@ -83,6 +83,22 @@ var ImgFigure = React.createClass({
 		);
 	}
 });
+class ControllerUnit extends React.Component{
+	constructor(props){
+		super(props);
+	}
+	handleClick(e){
+		e.stopPropagation;
+		e.preventDefault;
+	}
+	render(){
+		var controllerUnitClassName = 'controller-unit';
+		//如果是对应图片是中间状态 则线束控制按钮的中间状态
+		return(
+			<span className={controllerUnitClassName} onClick={this.handleClick}></span>
+			);
+	}
+}
 
 class AppComponent extends React.Component {
 	constructor() {
@@ -274,6 +290,7 @@ class AppComponent extends React.Component {
       }
   		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)}/>);
   		// console.log(this.state.imgsArrangeArr[index]);
+  		controllerUnits.push(<ControllerUnit/>);
   	}.bind(this));
     return (
     	<section className="stage" ref="stage">
