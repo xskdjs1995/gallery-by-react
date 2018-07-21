@@ -175,7 +175,7 @@ class AppComponent extends React.Component {
 
 
 			imgsArrangeTopArr = [],
-			topImgNum = Math.ceil(Math.random() * 2), //取得一个或者不取得
+			topImgNum = Math.floor(Math.random() * 2), //取得一个或者不取得
 			topImgSpliceIndex = 0, // 上边有几个
 			imgsArrangeCenterArr = imgsArrangeArr.splice(centerIndex,1);// imgsArrangeArr 删除指定的元素 并返回给 imgsArrangeCenterArr
 			
@@ -221,7 +221,7 @@ class AppComponent extends React.Component {
 					isCenter:false
 				}
 			}
-
+// debugger; //调试的断点
 			if (imgsArrangeTopArr && imgsArrangeTopArr[0]) {
 				imgsArrangeArr.splice(topImgSpliceIndex,0,imgsArrangeTopArr[0]);
 			}
