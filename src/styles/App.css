@@ -80,7 +80,7 @@ html, body{
     color:#a7a0a2;
     font-size: 16px;
 }
-.img-figure .is-inverse {
+.is-inverse {
     transform: translate(320px) rotateY(180deg);
 }
 

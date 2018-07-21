@@ -86,14 +86,27 @@ var ImgFigure = React.createClass({
 class ControllerUnit extends React.Component{
 	constructor(props){
 		super(props);
+		this.handleClick = this.handleClick.bind(this);//绑定hanleClick的作用域
 	}
 	handleClick(e){
+		if (this.props.arrange.isCenter) {
+			this.props.inverse();
+		}else{
+			this.props.center();
+		}
 		e.stopPropagation;
 		e.preventDefault;
 	}
 	render(){
 		var controllerUnitClassName = 'controller-unit';
+
 		//如果是对应图片是中间状态 则线束控制按钮的中间状态
+		if (this.props.arrange.isCenter) {
+			controllerUnitClassName += ' is-center';
+			if (this.props.arrange.isInverse) {
+				controllerUnitClassName += ' isInverse';
+			}
+		}
 		return(
 			<span className={controllerUnitClassName} onClick={this.handleClick}></span>
 			);
@@ -171,8 +184,8 @@ class AppComponent extends React.Component {
 				rotate:0,
 				isCenter: true
 			}
-			imgsArrangeCenterArr[0].pos = centerPos; //居中选中的元素
-			imgsArrangeCenterArr[0].rotate = 0; //布局中心的值 不需要
+			// imgsArrangeCenterArr[0].pos = centerPos; //居中选中的元素
+			// imgsArrangeCenterArr[0].rotate = 0; //布局中心的值 不需要
 
 			topImgSpliceIndex = Math.ceil(Math.random()*(imgsArrangeArr.length - topImgNum));
 			// console.log("imgsArrangeArr.length"+imgsArrangeArr.length);
@@ -271,27 +284,27 @@ class AppComponent extends React.Component {
 
 		this.rearrange(0);
 	}
-  render() {
-  	var controllerUnits = [],
-  		imgFigures = [];
-  	//遍历图片对象数组 将每个对象传给ImgFigure标签 一起添加到 imgFigures数组中
-  	imageDatas.forEach(function (value, index) {
-  		// console.log(this.state.imgsArrangeArr[index]);
-  		if(!this.state.imgsArrangeArr[index]){
-        this.state.imgsArrangeArr[index] = {
-          pos:{
-            left: 20,
-            top: 0
-          },
-          rotate:0,
-          isInverse: false,
-          isCenter: false
-        }
-      }
-  		imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)}/>);
-  		// console.log(this.state.imgsArrangeArr[index]);
-  		controllerUnits.push(<ControllerUnit/>);
-  	}.bind(this));
+  	render() {
+	  	var controllerUnits = [],
+	  		imgFigures = [];
+		  	//遍历图片对象数组 将每个对象传给ImgFigure标签 一起添加到 imgFigures数组中
+	  	imageDatas.forEach(function (value, index) {
+	  		// console.log(this.state.imgsArrangeArr[index]);
+	  		if(!this.state.imgsArrangeArr[index]){
+		        this.state.imgsArrangeArr[index] = {
+		          pos:{
+		            left: 20,
+		            top: 0
+		          },
+		          rotate:0,
+		          isInverse: false,
+		          isCenter: false
+		        }
+     		}
+			imgFigures.push(<ImgFigure key={index} data={value} ref={'imgFigure'+index} arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)}/>);
+			// console.log(this.state.imgsArrangeArr[index]);
+			controllerUnits.push(<ControllerUnit arrange={this.state.imgsArrangeArr[index]} inverse={this.inverse(index)} center={this.center(index)}/>);
+		}.bind(this));
     return (
     	<section className="stage" ref="stage">
     		<section className="img-sec">
