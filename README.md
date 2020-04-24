@@ -1,6 +1,6 @@
 # gallery-by-react
  one photo gallery based on react 
-https://shudongliu0111.github.io/gallery-by-react/
+https://xskdjs1995.github.io/gallery-by-react/
 npm run dist 打包
 npm run serve：dist 
 
